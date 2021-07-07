@@ -1,5 +1,6 @@
 package dev.vivekts.reactive;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -8,6 +9,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 
 @Component
+@Slf4j
 public class ReactiveWebPubSubHandler {
 
     private final ReactiveWebPubSubRepository reactiveWebPubSubRepository;
@@ -34,7 +36,12 @@ public class ReactiveWebPubSubHandler {
                 .bodyToMono(ReactiveWebPubSub.class)
                 .flatMap(m -> {
                     ReactiveWebPubSub saved = reactiveWebPubSubRepository.save(m);
-                    reactiveWebPubSubGateway.publishMessage(saved);
+                    log.info("Saved {}", m);
+                    try {
+                        reactiveWebPubSubGateway.publishMessage(saved);
+                    } catch (Exception e) {
+                        log.error("Exception thrown in PubSub", e);
+                    }
                     return ServerResponse
                             .created(URI.create("/api/" + m.getId()))
                             .bodyValue(saved);
