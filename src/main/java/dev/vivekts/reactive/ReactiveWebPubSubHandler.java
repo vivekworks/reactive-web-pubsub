@@ -11,9 +11,11 @@ import java.net.URI;
 public class ReactiveWebPubSubHandler {
 
     private final ReactiveWebPubSubRepository reactiveWebPubSubRepository;
+    private final ReactiveWebPubSubGateway reactiveWebPubSubGateway;
 
-    public ReactiveWebPubSubHandler(ReactiveWebPubSubRepository reactiveWebPubSubRepository) {
+    public ReactiveWebPubSubHandler(ReactiveWebPubSubRepository reactiveWebPubSubRepository, ReactiveWebPubSubGateway reactiveWebPubSubGateway) {
         this.reactiveWebPubSubRepository = reactiveWebPubSubRepository;
+        this.reactiveWebPubSubGateway = reactiveWebPubSubGateway;
     }
 
     public Mono<ServerResponse> get(ServerRequest request) {
@@ -32,6 +34,7 @@ public class ReactiveWebPubSubHandler {
                 .bodyToMono(ReactiveWebPubSub.class)
                 .flatMap(m -> {
                     ReactiveWebPubSub saved = reactiveWebPubSubRepository.save(m);
+                    reactiveWebPubSubGateway.publishMessage(saved);
                     return ServerResponse
                             .created(URI.create("/api/" + m.getId()))
                             .bodyValue(saved);
