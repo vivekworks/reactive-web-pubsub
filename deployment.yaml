@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reactive-web-pubsub
+  namespace: vivek-cluster-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: reactive-web-pubsub
+  template:
+    metadata:
+      labels:
+        app: reactive-web-pubsub
+    spec:
+      containers:
+        - name: reactive-web-pubsub
+          image: gcr.io/experiments-318714/reactive-web-pubsub:v6
+          ports:
+            - containerPort: 8080
+      serviceAccountName: vivek-cluster-namespace-sa
