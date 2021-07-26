@@ -1,0 +1,71 @@
+{
+    "name": "person",
+    "type": "record",
+    "namespace": "dev.vivekts",
+    "fields": [
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "age",
+        "type": "int"
+      },
+      {
+        "name": "email",
+        "type": "string"
+      },
+      {
+        "name": "role",
+        "type": "string"
+      },
+      {
+        "name": "designation",
+        "type": "string"
+      },
+      {
+        "name": "organizations",
+        "type": {
+          "type": "array",
+          "items": "string"
+        }
+      },
+      {
+        "name": "region",
+        "type": "string"
+      },
+      {
+        "name": "address",
+        "type": {
+          "name": "address",
+          "type": "record",
+          "fields": [
+            {
+              "name": "houseNo",
+              "type": "int"
+            },
+            {
+              "name": "street",
+              "type": "string"
+            },
+            {
+              "name": "location",
+              "type": "string"
+            },
+            {
+              "name": "city",
+              "type": "string"
+            },
+            {
+              "name": "state",
+              "type": "string"
+            },
+            {
+              "name": "pincode",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    ]
+  }
